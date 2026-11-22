@@ -7,8 +7,8 @@
 
 \subsubsection*{How these solutions compare with previous types of noise}
 \begin{itemize}
-    \item \textbf{Elimination of Jumping Between Stable States:} Unlike additive noise ($g(X) = c$), where constant fluctuations push trajectories back and forth across $X = 0$ between the potential wells, multiplicative noise vanishes at the origin ($g(0) = 0$). Consequently, $X = 0$ acts as an absorbing barrier, ensuring that trajectories starting at $X(0) > 0$ remain strictly positive for all $t > 0$ and preventing switching between the $\pm 1$ equilibria.
-    \item \textbf{Noise-Induced Stabilisation vs.\ Broadening:} Under additive noise ($g(X) = c$), increasing $c$ spreads the trajectories around $\pm 1$ and makes them jump more often between the two stable states at $X^* = +1$ and $X^* = -1$. Under multiplicative noise ($g(X) = cX$), increasing $c$ above a critical threshold ($|c| > \sqrt{2}$) results in all paths collapsing onto $X = 0$.
+    \item \textbf{Elimination of Jumping Between Stable States:} Since additive noise ($g(X) = c$) has constant kicks, including at $X = 0$, the trajectories can be pushed across the potential wells. Multiplicative noise vanishes at the origin ($g(0) = 0$), so $X = 0$ becomes a boundary. This means any trajectory starting at $X(0) > 0$ remains strictly positive and cannot switch to the other stable equilibrium at $X^* = -1$.
+    \item \textbf{Stabilisation at high noise instead of spreading:} With additive noise ($g(X) = c$), increasing $c$ widens the spread of the trajectories around $\pm 1$ and makes them jump more often between the two stable states at $X^* = +1$ and $X^* = -1$. With multiplicative noise ($g(X) = cX$), increasing $c$ above a critical threshold ($|c| > \sqrt{2}$) results in all paths collapsing onto $X = 0$.
 
 \end{itemize}
 
@@ -18,7 +18,7 @@
     \begin{equation}
         d(\ln X) = \frac{1}{X}\,dX - \frac{1}{2X^2}(dX)^2 = \left(1 - X^2 - \frac{c^2}{2}\right)dt + c\,dW_t.
     \end{equation}
-    When $X \approx 0$, there is an effective exponential growth rate of $\lambda = 1 - \frac{c^2}{2}$. For $|c| < \sqrt{2}$, $\lambda > 0$, so $X = 0$ remains unstable: the paths fluctuate around $X^* = 1$ under weak noise and drop to near zero when $1 \le c < \sqrt{2}$. Once $|c| > \sqrt{2}$, the negative noise $-\frac{c^2}{2}$ outweighs the $+1$ growth, pulling all paths towards $X = 0$, stabilising the origin.
+    When $X \approx 0$, there is an effective exponential growth rate of $\lambda = 1 - \frac{c^2}{2}$. For $|c| < \sqrt{2}$, $\lambda > 0$, so $X = 0$ remains unstable: the paths fluctuate around $X^* = 1$ under weak noise and drop to near zero when $1 \le c < \sqrt{2}$. Once $|c| > \sqrt{2}$, the negative noise $-\frac{c^2}{2}$ outweighs the $+1$ growth, pulling all paths towards $X = 0$ and stabilising the origin.
     
     \item \textbf{Panel 2 (Skewed Stationary Density and Mode Shift):} For $0 < |c| < 1$ and $X(0) > 0$, solving the stationary Fokker--Planck equation gives a one-sided, right-skewed density. Differentiating $p_s(x)$ shows that the mode sits at  $x_{\mathrm{mode}} = \sqrt{1 - c^2}$, resulting in $x_{\mathrm{mode}} = 0.8$ for $c = 0.6$. Since the noise term grows away from the origin, the histogram peak shifts inward compared with $X^* = 1$.
     \end{itemize}
