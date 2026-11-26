@@ -1,50 +1,56 @@
-%EMSTRONG Test strong convergence of Euler-Maruyama
-%
-% Solves
-Downloaded 11/20/26 to 129.234.0.168 . Redistribution subject to SIAM license or copyright; see https://epubs.siam.org/terms-privacy
-%
-dX = lambda*X dt + mu*X dW, X(0) = Xzero,
-where lambda = 2, mu = 1 and Xzer0 = 1.
-%
-% Discretized Brownian path over [0,1] has dt = 2^(-9).
-% E-M uses 5 different timesteps: 16dt, 8dt, 4dt, 2dt, dt.
-% Examine strong convergence at T=1: E | X_L- X(T) |.
-randn('state',100)
-lambda = 2; mu = 1; Xzero = 1; % problem parameters
-T = 1; N = 2^9; dt = T/N;
-%
-M = 1000;
-Xerr = zeros(M,5);
-for s = 1:M,
-    dW = sqrt(dt)*randn(1,N);
-    W = cumsum(dW);
-    % number of paths sampled
-    % preallocate array
-    % sample over discrete Brownian paths
-    % Brownian increments
-    % discrete Brownian path
-    Xtrue = Xzero*exp((lambda-0.5*mu^2)+mu*W(end));
-    for p = 1:5
-        R = 2^(p-1); Dt = R*dt; L = N/R;
-        % L Euler steps of size Dt = R*dt
-        Xtemp = Xzero;
-        for j = 1:L
-            Winc = sum(dW(R*(j-1)+1:R*j));
-            Xtemp = Xtemp + Dt*lambda*Xtemp + mu*Xtemp*Winc;
-        end
-        Xerr(s,p) = abs(Xtemp- Xtrue);
-        % store the error at t = 1
-    end
+% EM strong test (Euler - Maruyama)
+
+rng(67)  % pseudorandom seed
+
+% setting up stochastic equation as in section 5 of paper 
+% dX = f(X)dt + g(X)dW over range t = 0:1
+% for simplicity I am using dX = a*X dt + b*x dW
+
+a=2;
+b=1;
+
+
+T = 1;    % range
+N = 2^14;  % number of nodes
+dt = T/N;  % step size 
+dW = sqrt(dt)*randn(1, N);
+W = cumsum(dW); % discretized Brownian path 
+
+Initial_condition = 1;
+
+
+t_list = dt:dt:T; % array of t values separated by steps of dt
+
+
+% array of the true values of X
+Xtrue = Initial_condition*exp((a-0.5*b^2)*t_list+b*W);
+
+
+% EM strong test
+% use a bigger dt as we are approximating
+
+
+R = 8;
+Dt = R*dt;
+L = N/R;
+xaprox = zeros(1,L);
+xem_current = Initial_condition;
+
+for i = 1:L
+    step_em = sum(dW(R*(i-1)+1:R*i));
+    xem_current = xem_current+Dt*a*xem_current+b*xem_current*step_em;
+    xaprox(i) = xem_current;
 end
-Dtvals = dt*(2.^([0:4]));
-subplot(221)
-% top LH picture
-loglog(Dtvals,mean(Xerr),'b*-'), hold on
-loglog(Dtvals,(Dtvals.^(.5)),'r--'), hold off % reference slope of 1/2
-axis([1e-3 1e-1 1e-4 1])
-xlabel('\Delta t'), ylabel('Sample average of | X(T)- X_L |')
-title('emstrong.m','FontSize',10)
-%%%% Least squares fit of error = C * Dt^q %%%%
-A = [ones(5,1), log(Dtvals)']; rhs = log(mean(Xerr)');
-sol = A\rhs; q = sol(2)
-resid = norm(A*sol- rhs)
+
+t_aprox_list = 0:Dt:T;
+
+
+
+figure;
+hold on
+plot([0,t_list], [Initial_condition,Xtrue], 'LineWidth', 2);
+plot(t_aprox_list, [Initial_condition,xaprox], 'LineWidth', 1.5);
+grid on;
+xlabel('t');
+ylabel('X(t)');
+title('Euler-Maruyama Sample Path on [0, 1]');
